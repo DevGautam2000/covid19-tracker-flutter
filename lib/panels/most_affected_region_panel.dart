@@ -25,17 +25,29 @@ class MostAffectedRegionPanel extends StatelessWidget {
               children: [
                 Image(
                     image: NetworkImage(country['countryInfo']['flag'],
-                        scale: 3.0)),
-                Text(
-                  country['country'],
-                  style: TextStyle(fontSize: 20.0),
-                ),
-                Text(
-                  "Deaths: ${country['deaths'].toString()}",
-                  style: TextStyle(
-                      color: Colors.red.shade700,
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold),
+                        scale: 5.0)),
+                Container(
+                  width: MediaQuery.of(context).size.width * .70,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        country['country'],
+                        style: TextStyle(
+                            fontSize: 20.0, fontWeight: FontWeight.bold),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width * .35,
+                        child: Text(
+                          "Deaths: ${country['deaths'].toString()}",
+                          style: TextStyle(
+                              color: Colors.red.shade700,
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:covid_app/data/data_source.dart';
+import 'package:covid_app/pages/country.dart';
+import 'package:covid_app/panels/info_panel.dart';
 import 'package:covid_app/panels/most_affected_region_panel.dart';
 import 'package:covid_app/panels/world_wide_panel.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +18,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   Map? worldData;
   List? countryData;
+  List? countryDataCopy;
 
   fetchWorldData() async {
     http.Response response =
@@ -30,6 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
         .get(Uri.parse('https://corona.lmao.ninja/v3/covid-19/countries'));
     setState(() {
       countryData = jsonDecode(response.body);
+      countryDataCopy = jsonDecode(response.body);
       countryData!.sort((a, b) => b['deaths'].compareTo(a['deaths']));
     });
   }
@@ -81,7 +85,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         backgroundColor:
                             MaterialStateProperty.all(primaryBlack),
                       ),
-                      onPressed: () {},
+                      onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) =>
+                                  CountryPage(countryData: countryDataCopy!))),
                       child: Text("Regional"))
                 ],
               ),
@@ -111,10 +119,28 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             countryData == null
                 ? Container(
-                    height: 50.0,
-                    child: Text('its null'),
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.all(10.0),
+                    height: 80.0,
+                    child: CircularProgressIndicator(),
                   )
-                : MostAffectedRegionPanel(countryData: countryData!)
+                : MostAffectedRegionPanel(countryData: countryData!),
+            InfoPanel(),
+            SizedBox(
+              height: 50.0,
+            ),
+            Center(
+              child: Text(
+                "We Are Together In The Fight!",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22.0,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 50.0,
+            ),
           ],
         ),
       ),
